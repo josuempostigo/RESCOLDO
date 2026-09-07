@@ -1,0 +1,27 @@
+# Dependencias
+node_modules/
+.npm
+
+# Build
+dist/
+dist-ssr/
+
+# Entorno local
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# PWA generado
+sw.js
+workbox-*.js

@@ -1,0 +1,174 @@
+/*
+ * tokens.css — Sistema de diseño de Rescoldo
+ *
+ * Paleta basada en la sección 5.3 de la especificación técnica.
+ * IMPORTANTE: los colores marcados [verificar] deben confirmarse
+ * contra la app real de WhatsApp antes de publicar. Los marcados
+ * [fijo] son decisiones conscientes que no cambian sin conversarlo.
+ *
+ * Color de marca Rescoldo [fijo]: #F4A259 (ámbar/naranja)
+ * Es independiente del verde funcional de WhatsApp.
+ */
+
+/* ─── Modo claro (por defecto) ─────────────────────────────────── */
+:root {
+  /* Marca Rescoldo */
+  --color-brand: #F4A259;           /* [fijo] ámbar — logo y acentos de identidad propia */
+  --color-brand-dark: #D4853A;      /* versión más oscura para hover */
+
+  /* Acento funcional (verde WhatsApp) */
+  --color-accent: #25D366;          /* [verificar] verde principal */
+  --color-accent-dark: #128C7E;     /* [verificar] verde oscuro (header) */
+
+  /* Fondos */
+  --color-bg-app: #FFFFFF;          /* [verificar] fondo general y header */
+  --color-bg-chat: #ECE5DD;         /* [verificar] fondo del área de chat */
+  --color-bg-sidebar: #FFFFFF;      /* [verificar] fondo de la barra lateral */
+
+  /* Burbujas */
+  --color-bubble-mine: #D9FDD3;     /* [verificar] burbuja propia (is_me: true) */
+  --color-bubble-other: #FFFFFF;    /* [verificar] burbuja del otro */
+
+  /* Texto */
+  --color-text-primary: #111111;    /* [verificar] texto principal (no negro puro) */
+  --color-text-secondary: #667781;  /* [verificar] texto secundario / timestamps */
+  --color-text-placeholder: #8696A0;
+
+  /* Links */
+  --color-link: #25D366;            /* verde, no azul — sección 5.3 */
+
+  /* Eventos de sistema (mensajes centrados sin burbuja) */
+  --color-system-event-bg: #FFF9C4;
+  --color-system-event-text: #54656F;
+
+  /* Bordes y separadores */
+  --color-border: #E9EDEF;
+  --color-divider: #D1D7DB;
+
+  /* Íconos */
+  --color-icon: #54656F;
+  --color-icon-active: #25D366;
+
+  /* ─── Tipografía (sección 5.4) ─────────────────────────────────
+   * Fuente del sistema operativo — sin webfont propia.
+   * Cada plataforma ve su fuente nativa (San Francisco, Segoe UI,
+   * Roboto) igual que la app real de WhatsApp. [fijo]
+   */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+
+  /* Tamaños de fuente */
+  --text-xs: 0.6875rem;   /* 11px — timestamps */
+  --text-sm: 0.8125rem;   /* 13px — metadata, secondary */
+  --text-base: 0.9375rem; /* 15px — texto de mensajes */
+  --text-md: 1rem;        /* 16px — nombres de contacto */
+  --text-lg: 1.125rem;    /* 18px — títulos de sección */
+
+  /* Espaciado */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Radios de borde */
+  --radius-sm: 4px;
+  --radius-md: 7.5px;   /* burbujas de WhatsApp */
+  --radius-lg: 18px;    /* burbujas esquina contraria */
+  --radius-full: 9999px;
+
+  /* Breakpoint (referencia — usar en media queries) */
+  --breakpoint-desktop: 900px;
+
+  /* Sombras */
+  --shadow-bubble: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+  --shadow-panel: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  /* Transiciones */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+/* ─── Modo oscuro ───────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Fondos */
+    --color-bg-app: #111B21;          /* [verificar] */
+    --color-bg-chat: #0B141A;         /* [verificar] */
+    --color-bg-sidebar: #111B21;      /* [verificar] */
+
+    /* Burbujas */
+    --color-bubble-mine: #005C4B;     /* [verificar] */
+    --color-bubble-other: #202C33;    /* [verificar] */
+
+    /* Texto */
+    --color-text-primary: #E9EDEF;    /* [verificar] blanco roto, no #FFFFFF puro */
+    --color-text-secondary: #8696A0;
+    --color-text-placeholder: #667781;
+
+    /* Bordes */
+    --color-border: #2A3942;
+    --color-divider: #2A3942;
+
+    /* Íconos */
+    --color-icon: #8696A0;
+
+    /* Eventos de sistema */
+    --color-system-event-bg: #1D2D35;
+    --color-system-event-text: #8696A0;
+
+    /* Sombras (más sutiles en oscuro) */
+    --shadow-bubble: 0 1px 0.5px rgba(0, 0, 0, 0.3);
+    --shadow-panel: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ─── Reset y base ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-app);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+/* Forzar modo claro/oscuro manualmente (para el toggle de Ajustes, Fase 6) */
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
