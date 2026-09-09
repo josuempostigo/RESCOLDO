@@ -1,11 +1,9 @@
 /**
  * MessageBubble.jsx
- *
- * Componente que renderiza un mensaje individual en la conversación.
- * Maneja los diferentes tipos de mensajes (texto, media, sistema).
+ * Actualizado para incluir el AudioPlayer.
  */
-
 import { formatTime } from '../data/mockChats.js'
+import AudioPlayer from './AudioPlayer.jsx'
 import styles from './MessageBubble.module.css'
 
 export default function MessageBubble({ message, participant, isGroup }) {
@@ -38,8 +36,12 @@ export default function MessageBubble({ message, participant, isGroup }) {
           </div>
         )}
 
-        {/* Placeholder para contenido multimedia */}
-        {message.media_ref && (
+        {/* Media */}
+        {message.type === 'audio' && message.media_ref && (
+          <AudioPlayer durationSec={message.media_ref.duration_sec} />
+        )}
+        
+        {message.type !== 'audio' && message.media_ref && (
           <div className={styles.mediaPlaceholder}>
             [{message.type.toUpperCase()}] {message.media_ref.ref}
           </div>
@@ -55,7 +57,6 @@ export default function MessageBubble({ message, participant, isGroup }) {
 
         <div className={styles.metadata}>
           <span className={styles.time}>{time}</span>
-          {/* Aquí iría el doble check si fuera necesario, pero en exports de WP no siempre es exacto */}
         </div>
       </div>
     </div>

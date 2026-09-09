@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  min-width: 220px;
+}
+
+.playBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-icon);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.waveform {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 4px;
+  background-color: color-mix(in srgb, var(--color-text-primary) 15%, transparent);
+  border-radius: var(--radius-full);
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-icon-active);
+  border-radius: var(--radius-full);
+}
+
+.progressThumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-icon-active);
+  border-radius: var(--radius-full);
+}
+
+.duration {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  min-width: 35px;
+  text-align: right;
+}

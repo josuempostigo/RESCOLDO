@@ -1,16 +1,22 @@
+/**
+ * App.jsx
+ * Se gestiona el estado global del MediaViewer y se corrige el layout
+ * para que no existan huecos en blanco entre la barra lateral y el chat.
+ */
 import { useState } from 'react'
 import Sidebar from './components/Sidebar.jsx'
 import ChatArea from './components/ChatArea.jsx'
 import EmptyState from './components/EmptyState.jsx'
+import MediaViewer from './components/MediaViewer.jsx'
 import { MOCK_CHATS } from './data/mockChats.js'
 import styles from './App.module.css'
 
 export default function App() {
   const [activeChatId, setActiveChatId] = useState(null)
   
-  // En mobile, si hay un chat activo, mostramos el ChatArea. 
-  // Si no, mostramos el Sidebar.
-  // En desktop, mostramos ambos siempre (Sidebar a la izq, ChatArea a la der).
+  // Estado para el modal de ver media a pantalla completa
+  // viewMedia = { name: string, color: string, url?: string } | null
+  const [viewMedia, setViewMedia] = useState(null)
   
   const activeChat = MOCK_CHATS.find(c => c.chat_id === activeChatId)
 
@@ -20,12 +26,12 @@ export default function App() {
         <Sidebar 
           chats={MOCK_CHATS} 
           activeChatId={activeChatId}
-          onSelectChat={setActiveChatId} 
+          onSelectChat={setActiveChatId}
+          onViewMedia={setViewMedia}
         />
       </div>
       
       <div className={`${styles.chatWrapper} ${!activeChatId ? styles.hideOnMobile : ''}`}>
-        {/* Botón de "Volver" solo visible en mobile para cerrar el chat */}
         {activeChatId && (
           <button 
             className={styles.mobileBackButton}
@@ -37,11 +43,15 @@ export default function App() {
         )}
         
         {activeChat ? (
-          <ChatArea chat={activeChat} />
+          <ChatArea chat={activeChat} onViewMedia={setViewMedia} />
         ) : (
           <EmptyState type="no-selection" />
         )}
       </div>
+
+      {viewMedia && (
+        <MediaViewer media={viewMedia} onClose={() => setViewMedia(null)} />
+      )}
     </div>
   )
 }

@@ -1,14 +1,17 @@
+/**
+ * ChatArea.jsx
+ * Se añade onAvatarClick al header para ver la foto de perfil.
+ */
 import Avatar from './Avatar.jsx'
 import MessageBubble from './MessageBubble.jsx'
 import { getParticipant } from '../data/mockChats.js'
 import styles from './ChatArea.module.css'
 
-export default function ChatArea({ chat }) {
+export default function ChatArea({ chat, onViewMedia }) {
   if (!chat) return null
 
   const { metadata, messages } = chat
   
-  // Para grupos, el color genérico; para individuales, el del otro contacto
   const otherParticipant = metadata.participants.find(p => !p.is_me)
   const avatarColor = metadata.chat_type === 'individual'
     ? otherParticipant?.color
@@ -17,7 +20,12 @@ export default function ChatArea({ chat }) {
   return (
     <main className={styles.chatArea}>
       <header className={styles.header}>
-        <Avatar name={metadata.title} color={avatarColor} size="md" />
+        <div 
+          onClick={() => onViewMedia({ name: metadata.title, color: avatarColor })}
+          style={{ cursor: 'pointer' }}
+        >
+          <Avatar name={metadata.title} color={avatarColor} size="md" />
+        </div>
         <div className={styles.headerInfo}>
           <h2 className={styles.title}>{metadata.title}</h2>
           <span className={styles.subtitle}>
