@@ -1,12 +1,8 @@
-/**
- * MessageBubble.jsx
- * Actualizado para incluir el AudioPlayer.
- */
 import { formatTime } from '../data/mockChats.js'
 import AudioPlayer from './AudioPlayer.jsx'
 import styles from './MessageBubble.module.css'
 
-export default function MessageBubble({ message, participant, isGroup }) {
+export default function MessageBubble({ message, participant, isGroup, repliedMessage, repliedSender }) {
   const isMe = participant?.is_me
   const isSystem = message.type === 'system_event'
 
@@ -25,35 +21,31 @@ export default function MessageBubble({ message, participant, isGroup }) {
     <div className={`${styles.wrapper} ${isMe ? styles.mine : styles.other}`}>
       <div className={styles.bubble}>
         {showSenderName && (
-          <div className={styles.senderName} style={{ color: participant.color }}>
-            {participant.display_name}
-          </div>
+          <div className={styles.senderName} style={{ color: participant.color }}>{participant.display_name}</div>
         )}
 
-        {message.reply_to && (
+        {/* Reply Context - Ya no muestra IDs crudos */}
+        {repliedMessage && (
           <div className={styles.replyPlaceholder}>
-            Respuesta a: {message.reply_to}
+            <div className={styles.replySender} style={{ color: repliedSender?.color || 'var(--color-accent-dark)' }}>
+              {repliedSender?.display_name || 'Alguien'}
+            </div>
+            <div className={styles.replyText}>
+              {repliedMessage.text || `[${repliedMessage.type.toUpperCase()}]`}
+            </div>
           </div>
         )}
 
-        {/* Media */}
         {message.type === 'audio' && message.media_ref && (
           <AudioPlayer durationSec={message.media_ref.duration_sec} />
         )}
         
         {message.type !== 'audio' && message.media_ref && (
-          <div className={styles.mediaPlaceholder}>
-            [{message.type.toUpperCase()}] {message.media_ref.ref}
-          </div>
+          <div className={styles.mediaPlaceholder}>[{message.type.toUpperCase()}] {message.media_ref.ref}</div>
         )}
 
         {message.text && <div className={styles.text}>{message.text}</div>}
-        
-        {message.type === 'deleted' && (
-          <div className={styles.deletedText}>
-            🚫 {message.text}
-          </div>
-        )}
+        {message.type === 'deleted' && <div className={styles.deletedText}>🚫 {message.text}</div>}
 
         <div className={styles.metadata}>
           <span className={styles.time}>{time}</span>
