@@ -1,26 +1,47 @@
-/**
- * App.jsx — Componente raíz de Rescoldo
- *
- * Por ahora es solo un esqueleto de bienvenida.
- * La estructura real de layout (panel doble en escritorio,
- * columna única en celular) se construye en la Fase 5.
- */
-
+import { useState } from 'react'
+import Sidebar from './components/Sidebar.jsx'
+import ChatArea from './components/ChatArea.jsx'
+import EmptyState from './components/EmptyState.jsx'
+import { MOCK_CHATS } from './data/mockChats.js'
 import styles from './App.module.css'
 
 export default function App() {
+  const [activeChatId, setActiveChatId] = useState(null)
+  
+  // En mobile, si hay un chat activo, mostramos el ChatArea. 
+  // Si no, mostramos el Sidebar.
+  // En desktop, mostramos ambos siempre (Sidebar a la izq, ChatArea a la der).
+  
+  const activeChat = MOCK_CHATS.find(c => c.chat_id === activeChatId)
+
   return (
-    <div className={styles.welcome}>
-      <div className={styles.logo}>
-        <span className={styles.flame} aria-hidden="true">🔥</span>
-        <h1>Rescoldo</h1>
+    <div className={styles.appContainer}>
+      <div className={`${styles.sidebarWrapper} ${activeChatId ? styles.hideOnMobile : ''}`}>
+        <Sidebar 
+          chats={MOCK_CHATS} 
+          activeChatId={activeChatId}
+          onSelectChat={setActiveChatId} 
+        />
       </div>
-      <p className={styles.subtitle}>
-        Tus conversaciones, como las recordás.
-      </p>
-      <p className={styles.hint}>
-        Fase 0 completada — el proyecto está listo para construir.
-      </p>
+      
+      <div className={`${styles.chatWrapper} ${!activeChatId ? styles.hideOnMobile : ''}`}>
+        {/* Botón de "Volver" solo visible en mobile para cerrar el chat */}
+        {activeChatId && (
+          <button 
+            className={styles.mobileBackButton}
+            onClick={() => setActiveChatId(null)}
+            aria-label="Volver a la lista de chats"
+          >
+            ← Volver
+          </button>
+        )}
+        
+        {activeChat ? (
+          <ChatArea chat={activeChat} />
+        ) : (
+          <EmptyState type="no-selection" />
+        )}
+      </div>
     </div>
   )
 }
